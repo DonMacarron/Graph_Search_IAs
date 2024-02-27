@@ -1,0 +1,3 @@
+Atributos de la arista en la DB: {'osmid': 803049226, 'highway': 'footway', 'oneway': False, 'reversed': False, 'length': 8.11}
+
+Atributos del nodo en DB: {'y': 39.4471752, 'x': -0.3923811, 'street_count': 2}

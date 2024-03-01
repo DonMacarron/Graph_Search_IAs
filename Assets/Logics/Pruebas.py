@@ -8,3 +8,6 @@ graph = ox.graph_from_place(place_name, network_type="all")
 # Iterar sobre los nodos y sus atributos
 for node, data in graph.nodes(data=True):
     print(f"Atributos del nodo {node}: {data}")
+    
+for node, node2, data in graph.edges(data=True):
+    print(f"Atributos del nodo {node}: {data}")

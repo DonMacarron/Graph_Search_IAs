@@ -4,10 +4,23 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
-    public int ID { get; set; }
-    public double CoordinateX { get; set; }
-    public double CoordinateY { get; set; }
+    public float CoordinateX { get; set; }
+    public float CoordinateY { get; set; }
 
-    public LinkedList<Edge> edges = new LinkedList<Edge>();
-    public Color color {  get; set; }
+    public LinkedList<Edge> edges;
+    public Node(float coordinateX, float coordinateY)
+    {
+        CoordinateX = coordinateX;
+        CoordinateY = coordinateY;
+        edges = new LinkedList<Edge>();
+    }
+    public void addConection(Edge ed) 
+    {
+        edges.AddLast(ed);
+    }
+    public void InitializeNode(float x, float y) {
+        CoordinateX = x;
+        CoordinateY = y;
+        edges = new LinkedList<Edge>();
+    }
 }

@@ -4,7 +4,20 @@ using UnityEngine;
 
 public class Edge : MonoBehaviour
 {
-    private Node DesntineNode { get; set; }
-    private double Distance {  get; set; }
-    private string Name { get; set; }
+    public Node OriginNode { get; set; }
+    public Node DestineNode { get; set; }
+    public float Distance {  get; set; }
+    public Edge() { }
+    public Edge(Node destine, Node origin, float distance)
+    {
+        OriginNode = origin;
+        DestineNode = destine;
+        Distance = distance;
+    }
+    public void OnServerInitialized(Node destine, Node origin, float distance)
+    {
+        OriginNode = origin;
+        DestineNode = destine;
+        Distance = distance;
+    }
 }

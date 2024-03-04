@@ -7,9 +7,18 @@
             "actions": [
                 {
                     "name": "CameraCloseIn",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "12aa6433-fb9f-4424-9feb-e3c6d3208725",
                     "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CameraMovementAWSD",
+                    "type": "Value",
+                    "id": "4848d8fd-ab54-4231-82d9-809264eafa87",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -18,14 +27,69 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "5bedd331-4c2d-4bef-9289-0c9d8a5621a5",
-                    "path": "<Mouse>/middleButton",
+                    "id": "3933a93d-31f5-40fe-8045-4d4b385ba21a",
+                    "path": "<Mouse>/scroll/y",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "CameraCloseIn",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "9345d55e-e414-4e9c-bb40-5e180db1f37a",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraMovementAWSD",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "a1c0e049-24ad-48a5-8287-72b418d708a0",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraMovementAWSD",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "f7cbacaa-2dcd-4274-a26e-c349e33b53a7",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraMovementAWSD",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "fdd69ff5-5d2a-46d3-becc-df0310db79d5",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraMovementAWSD",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "6e50e2e1-df48-4a93-bc53-9b7b6f5c777d",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraMovementAWSD",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

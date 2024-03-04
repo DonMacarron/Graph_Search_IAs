@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Node : MonoBehaviour
@@ -22,5 +23,8 @@ public class Node : MonoBehaviour
         CoordinateX = x;
         CoordinateY = y;
         edges = new LinkedList<Edge>();
+    }
+    public bool existsConection() {
+        return edges.Any();
     }
 }

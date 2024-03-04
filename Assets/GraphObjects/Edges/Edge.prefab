@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4549404772645354727}
   - component: {fileID: 5709934067838204787}
-  - component: {fileID: 1635283326970212016}
   m_Layer: 0
   m_Name: Edge
   m_TagString: Untagged
@@ -85,15 +84,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1635283326970212016
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6178314960317408007}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ac85599ebe86604b91c66ea4551ac3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

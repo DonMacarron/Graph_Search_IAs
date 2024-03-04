@@ -1,13 +1,19 @@
-import osmnx as ox
-import networkx as nx
+# -*- coding: utf-8 -*-
+from re import I
+import sys  
+from shapely.geometry import mapping
 
-# Configurar el entorno de la ciudad
-place_name = "Valencia, Spain"
-graph = ox.graph_from_place(place_name, network_type="all")
 
-# Iterar sobre los nodos y sus atributos
-for node, data in graph.nodes(data=True):
-    print(f"Atributos del nodo {node}: {data}")
-    
-for node, node2, data in graph.edges(data=True):
-    print(f"Atributos del nodo {node}: {data}")
+cantidad_argumentos = len(sys.argv)
+
+
+if cantidad_argumentos > 1:
+    print(f"Se proporcionaron {cantidad_argumentos} argumentos.")
+
+    if(cantidad_argumentos == 2):
+        for indice, argumento in enumerate(sys.argv[0:], start=0):
+            print(f"Argumento {indice}: {argumento}")
+    else:
+        print("Sobran argumentos")
+else:
+    print("No se proporcionaron argumentos.")

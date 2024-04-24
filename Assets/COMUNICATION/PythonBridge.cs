@@ -1,7 +1,8 @@
+using System;
 using System.Diagnostics;
 using UnityEngine;
 
-public class Ejemplo : MonoBehaviour
+public class PythonBridge : MonoBehaviour
 {
     [SerializeField]
     public string destino;
@@ -11,18 +12,16 @@ public class Ejemplo : MonoBehaviour
 
     void Awake()
     {
-
         destino = PlayerPrefs.GetString("City");
-
+        UnityEngine.Debug.Log("Destino:  "+destino);
         if (destino != null && destino != "" && destino != "Valencia, Spain")
         {
-            // Obtener la ruta completa al script Python en la carpeta Assets
-            string rutaScript = Application.dataPath + "/Logics/Datasender.py " + destino.Replace(" ","");
+            string rutaScriptPython = "Assets\\Logics\\Datasender.py ";
+            string argsPython = destino.Replace(" ", "");
+            UnityEngine.Debug.Log("Destino:  " + destino);
 
-            // Reemplazar las barras invertidas con barras diagonales para compatibilidad
-            rutaScript = rutaScript.Replace("\\", "/");
             reader.isVlc = false;
-            EjecutarScriptPythonInTerminal(rutaScript);
+            executePythonCityIni(rutaScriptPython, argsPython);
         }
         else
         {
@@ -31,15 +30,15 @@ public class Ejemplo : MonoBehaviour
         }
     }
 
-    void EjecutarScriptPythonInTerminal(string rutaCompletaAlScript)
+    void executePythonCityIni(string rutaScriptPython, string argumentos)
     {
-        string comandoCmd = $"cmd /k python {rutaCompletaAlScript})";
-
-        UnityEngine.Debug.Log("Comando cmd: " + comandoCmd);
-
         ProcessStartInfo startInfo = new ProcessStartInfo();
-        startInfo.FileName = "cmd.exe";
-        startInfo.Arguments = $"/k {comandoCmd}";  // /k mantiene la ventana de cmd abierta después de la ejecución
+        startInfo.FileName = "python";  
+        startInfo.Arguments = $"{rutaScriptPython} {argumentos}";
+        startInfo.RedirectStandardOutput = true;
+        startInfo.RedirectStandardError = true;
+        startInfo.UseShellExecute = false;
+        //startInfo.CreateNoWindow = true;
 
         using (Process process = new Process())
         {
@@ -48,13 +47,20 @@ public class Ejemplo : MonoBehaviour
             try
             {
                 process.Start();
-                process.WaitForExit();  // Esperar a que el proceso de cmd termine antes de continuar
 
-                UnityEngine.Debug.Log("Proceso de cmd terminado");
+                string output = process.StandardOutput.ReadToEnd();
+                string error = process.StandardError.ReadToEnd();
+
+                UnityEngine.Debug.Log("Output: " + output);
+                UnityEngine.Debug.Log("Error: " + error);
+
+                process.WaitForExit();
+
+                UnityEngine.Debug.Log("Proceso de Python terminado");
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                UnityEngine.Debug.LogError("Error al ejecutar cmd: " + ex.Message);
+                UnityEngine.Debug.Log("Error al ejecutar Python: " + ex.Message);
             }
         }
     }

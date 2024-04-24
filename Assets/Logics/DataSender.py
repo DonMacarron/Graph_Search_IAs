@@ -5,6 +5,7 @@ import json
 import sys  
 import os
 from shapely.geometry import mapping
+import time
 
 def addSpaceToCity(a):
     partes = a.split(',', 1)
@@ -12,7 +13,9 @@ def addSpaceToCity(a):
 
 cantidad_argumentos = len(sys.argv)
 
-    
+print("estamos")
+for aaaa in sys.argv:
+    print(type(aaaa))
 
 #la ciudad se pasa como argumentos. Por defecto = Valencia, Spain
 if cantidad_argumentos > 1:
@@ -20,7 +23,6 @@ if cantidad_argumentos > 1:
 
     if(cantidad_argumentos == 2):
         place_name = sys.argv[1]
-        print(place_name)
         graph = ox.graph_from_place(place_name, network_type="all")
 
         # Obtener información de nodos y aristas
@@ -40,6 +42,18 @@ if cantidad_argumentos > 1:
         # Guardar información en un archivo JSON
         with open('data.json', 'w') as json_file:
             json.dump(data, json_file, default=str)
+            
+        serverScript = "ServerP.py"
+
+        # Intenta ejecutar ServerP.py
+        try:
+            exec(open(serverScript).read())
+        except FileNotFoundError:
+            print("El archivo script2.py no fue encontrado en la ruta especificada:", script2_path)
+        except Exception as e:
+            print("Ocurrio un error al ejecutar ServerP.py:", e)
+            
+
     
     else:
         print("Sobran argumentos")
@@ -47,6 +61,4 @@ if cantidad_argumentos > 1:
 else:
     print("No se proporcionaron argumentos.")
     place_name = "Valencia, Spain"
-
-
 

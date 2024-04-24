@@ -45,6 +45,7 @@ public class Manager : MonoBehaviour
     public void addNode(string id, NodeInfo inf)
     {
         GameObject nodeObject = Instantiate(nodePrefab);
+        nodeObject.AddComponent<BoxCollider>();
         Node newNode = nodeObject.AddComponent<Node>();
         nodeObject.name = id;
 
@@ -76,7 +77,6 @@ public class Manager : MonoBehaviour
             Node dest = GraphNodes[destineId];
 
             // Is long enough
-            Debug.Log(longEnoughEdge(origin, dest));
             if (longEnoughEdge(origin, dest)) {
                 GameObject edgeObject = Instantiate(edgePrefab);
                 edgeObject.name = "(" + originId + "," + destineId + ")";

@@ -42,18 +42,6 @@ if cantidad_argumentos > 1:
         # Guardar información en un archivo JSON
         with open('data.json', 'w') as json_file:
             json.dump(data, json_file, default=str)
-            
-        serverScript = "ServerP.py"
-
-        # Intenta ejecutar ServerP.py
-        try:
-            exec(open(serverScript).read())
-        except FileNotFoundError:
-            print("El archivo script2.py no fue encontrado en la ruta especificada:", script2_path)
-        except Exception as e:
-            print("Ocurrio un error al ejecutar ServerP.py:", e)
-            
-
     
     else:
         print("Sobran argumentos")

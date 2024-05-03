@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class Manager : MonoBehaviour
 {
+    public CameraController cameraController;
+    public PythonBridge bridge;
+
     public Dictionary<string, Node> GraphNodes;
 
     public GameObject nodePrefab;
@@ -48,6 +52,7 @@ public class Manager : MonoBehaviour
         nodeObject.AddComponent<BoxCollider>();
         Node newNode = nodeObject.AddComponent<Node>();
         nodeObject.name = id;
+        newNode.id = id;
 
         // Set properties or perform initialization as needed
         newNode.InitializeNode(inf.x, inf.y);
@@ -184,4 +189,38 @@ public class Manager : MonoBehaviour
         }
         else {  return false; }
     }
+    public void sendObjectiveNodes()
+    {
+        LinkedList<Node> objectiveNodes = new LinkedList<Node> ();
+        objectiveNodes.AddLast(cameraController.nodeObjectSelected0.GetComponent<Node>());
+        objectiveNodes.AddLast(cameraController.nodeObjectSelected1.GetComponent<Node>());
+
+        bridge.sendMessageToServer(nodeListToString(objectiveNodes));
+    }
+
+    public void sendNodeAndAdjacents(Node father)
+    {
+        LinkedList<Edge> edges = father.getEdges();
+
+        bridge.sendMessageToServer(edgeListToString(edges));
+    }
+    private string nodeListToString(LinkedList<Node> inNodes)
+    {
+        string msg = "";
+        foreach (Node nd in inNodes)
+        {
+            msg = msg + nd.id + ";" + nd.CoordinateX + ";" + nd.CoordinateY + " ";
+        }
+        return msg;
+    }
+    private string edgeListToString(LinkedList<Edge> inNodes)
+    {
+        string msg = "";
+        foreach (Edge ed in inNodes)
+        {
+            msg = msg + ed.OriginNode.id + ";" + ed.Distance + ";" + ed.DestineNode.id + " ";
+        }
+        return msg;
+    }
+
 }

@@ -16,8 +16,8 @@ public class CameraController : MonoBehaviour
     private float scrollInput;
     private Camera cam;
     private GameObject nodeObjectSelected;
-    private GameObject nodeObjectSelected0;
-    private GameObject nodeObjectSelected1;
+    public GameObject nodeObjectSelected0;
+    public GameObject nodeObjectSelected1;
 
     public GameObject selectionIndicatorPrefab; 
     private GameObject[] selectionIndicator;
@@ -28,7 +28,8 @@ public class CameraController : MonoBehaviour
         custonInput = new CustomInput();
         cam = GetComponent<Camera>();
         lastSelectedNode = null;
-
+        nodeObjectSelected0 = null;
+        nodeObjectSelected1 = null;
         selectionIndicator = new GameObject[2];
     }
 
@@ -42,66 +43,46 @@ public class CameraController : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                // If the selected object isa Node
+
                 nodeObjectSelected = hit.collider.gameObject;
+
                 if (nodeObjectSelected.GetComponent<Node>() != null)
-                {   
-                    if (nodeObjectSelected == nodeObjectSelected0)
+                {
+                    // If the selected object is a not already selected Node
+                    if (nodeObjectSelected != nodeObjectSelected0 & nodeObjectSelected != nodeObjectSelected1)
                     {
-                        DestroySelectionIndicator(0);
-                        nodeObjectSelected0 = null;
-                    }
-                    else
-                    {
-                        if (nodeObjectSelected == nodeObjectSelected1)
+
+                        if (nodeObjectSelected0 == null)
                         {
-                            DestroySelectionIndicator(1);
-                            nodeObjectSelected1 = null;
+                            nodeObjectSelected0 = nodeObjectSelected;
+                            Debug.Log(nodeObjectSelected0);
+                            ShowSelectionIndicator(nodeObjectSelected0, 0);
                         }
                         else
                         {
-                            if (nodeObjectSelected0 == null)
-                            {
-                                nodeObjectSelected0 = nodeObjectSelected;
-                                Node nodeSelected = nodeObjectSelected0.GetComponent<Node>();
-                                ShowSelectionIndicator(nodeObjectSelected0, 0);
-                                lastSelectedNode = nodeObjectSelected0;
-                            }
-                            else
-                            {
-                                if (nodeObjectSelected1 == null)
-                                {
-                                    nodeObjectSelected1 = nodeObjectSelected;
-                                    Node nodeSelected = nodeObjectSelected1.GetComponent<Node>();
-                                    ShowSelectionIndicator(nodeObjectSelected1, 0);
-                                    lastSelectedNode = nodeObjectSelected1;
-                                }
-                                else
-                                {
-                                    if(lastSelectedNode == nodeObjectSelected1)
-                                    {
-                                        DestroySelectionIndicator(0);
-                                        nodeObjectSelected0 = nodeObjectSelected;
-                                        ShowSelectionIndicator(nodeObjectSelected0,0);
-                                        lastSelectedNode = nodeObjectSelected0;
-                                    }
-                                    else
-                                    {
-                                        DestroySelectionIndicator(1);
-                                        nodeObjectSelected1 = nodeObjectSelected;
-                                        ShowSelectionIndicator(nodeObjectSelected1, 1);
-                                        lastSelectedNode = nodeObjectSelected1;
-                                    }
-                                }
-                            }
+                            nodeObjectSelected1 = nodeObjectSelected;
+                            ShowSelectionIndicator(nodeObjectSelected1, 1);
+                        }
+
+                    }
+                    else
+                    {
+                        if (nodeObjectSelected == nodeObjectSelected0)
+                        {
+                            nodeObjectSelected0 = null;
+                            HideSelectionIndicator(0);
+                        }
+                        else
+                        {
+                            nodeObjectSelected1 = null;
+                            HideSelectionIndicator(1);
                         }
                     }
+                    lastSelectedNode = nodeObjectSelected;
                 }
-
             }
+            
         }
-
-
 
         // read AWSD input
         movementInput = custonInput.MapControl.CameraMovementAWSD.ReadValue<Vector2>();
@@ -115,7 +96,7 @@ public class CameraController : MonoBehaviour
     
     private void cameraPositionMove()
     {
-        cam.transform.localPosition += new Vector3(movementInput.x * cameraVelocity, movementInput.y * cameraVelocity, 0f);
+        cam.transform.localPosition += new Vector3(movementInput.x * cameraVelocity, movementInput.y * cameraVelocity, 0f) * cam.orthographicSize/150;
 
     }
 
@@ -123,6 +104,17 @@ public class CameraController : MonoBehaviour
     {
         cam.orthographicSize -= (scrollInput * cameraSizeChangeVelocity);
         cam.orthographicSize = cam.orthographicSize > minimumCameraSize? cam.orthographicSize : minimumCameraSize;
+
+
+        // Scale selection indicators with zoom
+        if (selectionIndicator[0] != null)
+        {
+            selectionIndicator[0].transform.localScale = new Vector3(cam.orthographicSize, cam.orthographicSize, 1) /10;
+        }
+        if (selectionIndicator[1] != null)
+        {
+            selectionIndicator[1].transform.localScale = new Vector3(cam.orthographicSize, cam.orthographicSize, 1) / 10;
+        }
     }
 
 
@@ -147,22 +139,19 @@ public class CameraController : MonoBehaviour
         if (selectionIndicator[selection] == null)
         {
             selectionIndicator[selection] = Instantiate(selectionIndicatorPrefab, selectedObject.transform.position, Quaternion.identity);
+            Debug.Log(selectionIndicator[selection]);
+            selectionIndicator[selection].GetComponent<SpriteRenderer>().color = selection == 0? Color.blue: Color.red;
+            Debug.Log(selection == 0 ? Color.blue : Color.red);
         }
 
         // Posicionar el objeto visual de selección sobre el objeto seleccionado
         selectionIndicator[selection].transform.position = selectedObject.transform.position;
 
-        selectionIndicator[0].GetComponent<SpriteRenderer>().color = Color.blue;
-        selectionIndicator[1].GetComponent<SpriteRenderer>().color = Color.red;
-
         // Activar el objeto visual de selección para que sea visible
         selectionIndicator[selection].SetActive(true);
     }
-
-    void DestroySelectionIndicator(int d)
-    {
-        Destroy(selectionIndicator[d]);
-        selectionIndicator[d] = null;
+    void HideSelectionIndicator(int selection) {
+        Destroy(selectionIndicator[selection]);
+        selectionIndicator[selection] = null;
     }
-
 }

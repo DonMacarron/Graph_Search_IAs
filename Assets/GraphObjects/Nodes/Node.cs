@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
+    public string id;
     public float CoordinateX { get; set; }
     public float CoordinateY { get; set; }
 
@@ -26,5 +27,9 @@ public class Node : MonoBehaviour
     }
     public bool existsConection() {
         return edges.Any();
+    }
+    public LinkedList<Edge> getEdges()
+    {
+        return this.edges;
     }
 }
